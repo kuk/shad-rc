@@ -16,7 +16,7 @@ from rc.obj import (
     Contact,
     Match,
 )
-from neludim.schedule import week_index_monday
+from rc.schedule import week_index_monday
     
 from rc.ops import (
     ask_agree_participate,

@@ -33,6 +33,6 @@ C - confirm
 F! - fail
 NP - no_partner
 
-·  FT C  ·  @a
 P  FT NP ·  C 
+·  FT C  ·  @a
 ·  FT C  4  @b'''

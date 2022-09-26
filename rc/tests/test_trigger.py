@@ -1,5 +1,5 @@
 
-from neludim.trigger import build_app
+from rc.trigger import build_app
 
 
 PAYLOAD = {
