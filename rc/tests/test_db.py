@@ -1,5 +1,5 @@
 
-from neludim.obj import (
+from rc.obj import (
     User,
     Contact,
     Match
@@ -15,7 +15,6 @@ async def test_users(db):
     user = User(
         user_id=1,
         name='abc',
-        tags=['a', 'b']
     )
 
     await db.put_user(user)

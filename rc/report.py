@@ -5,7 +5,6 @@ from collections import defaultdict
 from .const import (
     CONFIRM_STATE,
     FAIL_STATE,
-    KRUTAN_TAG,
 )
 from .text import user_mention
 
@@ -16,7 +15,6 @@ NO_PARTNER_STATE = 'no_partner'
 @dataclass
 class ReportRecord:
     mention: str
-    is_krutan: bool
     paused: bool
     first_time: bool
     state: str
@@ -109,11 +107,9 @@ def gen_report(users, contacts, week_index):
             feedback = None
 
         mention = user_mention(user)
-        is_krutan = KRUTAN_TAG in user.tags
 
         yield ReportRecord(
             mention=mention,
-            is_krutan=is_krutan,
             paused=paused,
             first_time=first_time,
             state=state,
@@ -128,8 +124,7 @@ SHORT_STATES = {
     NO_PARTNER_STATE: 'NP'
 }
 
-ABBRS = '''KR - krutan
-P - pause
+ABBRS = '''P - pause
 FT - first_time
 
 C - confirm
@@ -139,7 +134,6 @@ NP - no_partner
 
 
 def format_report_record(record):
-    yield 'KR' if record.is_krutan else EMPTY_SYMBOL
     yield 'P' if record.paused else EMPTY_SYMBOL
     yield 'FT' if record.first_time else EMPTY_SYMBOL
 
@@ -162,7 +156,6 @@ def format_report_record(record):
 def format_report(records, html):
     def key(record):
         return (
-            record.is_krutan,
             record.paused,
             record.first_time,
             record.state or EMPTY_SYMBOL,

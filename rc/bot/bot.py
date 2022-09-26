@@ -4,7 +4,7 @@ from aiogram import Dispatcher  # noqa
 
 from aiogram.types import ParseMode
 
-from neludim.const import BOT_TOKEN
+from rc.const import BOT_TOKEN
 
 from .middlewares import setup_middlewares
 from .filters import setup_filters

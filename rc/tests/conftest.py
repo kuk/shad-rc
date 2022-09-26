@@ -3,8 +3,8 @@ import asyncio
 
 import pytest
 
-from neludim.db import DB
-from neludim.tests.fake import (
+from rc.db import DB
+from rc.tests.fake import (
     FakeContext,
     fake_setup
 )

@@ -31,10 +31,6 @@ from .bot.broadcast import (
     Message,
     broadcast
 )
-from .bot.tag_user import (
-    tag_user_text,
-    tag_user_markup
-)
 from .schedule import week_index
 from .obj import (
     Match,
@@ -65,11 +61,6 @@ def ask_agree_participate_text(schedule):
 ASK_EDIT_ABOUT_TEXT = f'''Заполни, пожалуйста, ссылки /{EDIT_LINKS_COMMAND} или "о себе" /{EDIT_ABOUT_COMMAND}.
 
 Собеседник поймёт чем ты занимаешься, о чём интересно спросить. Снимает неловкость в начале разговора.'''
-
-
-# MAYBE TODO
-# Предлагаю тебе заполнить новый раздел "о себе" в анкете /edit_about.
-# Упростит задачу собеседнику, быстрее поймёт чем ты занимаешься, не придётся ходить по ссылкам.
 
 
 def send_contact_text(user):
@@ -398,21 +389,3 @@ async def report_previous_week(context):
         chat_id=ADMIN_USER_ID,
         text=report_text(records, html=True)
     )
-
-
-async def tag_users(context):
-    users = await context.db.read_users()
-
-    for user in users:
-        if (
-                user.updated_profile
-                and (
-                    not user.confirmed_tags
-                    or user.confirmed_tags < user.updated_profile
-                )
-        ):
-            await context.bot.send_message(
-                chat_id=ADMIN_USER_ID,
-                text=tag_user_text(user),
-                reply_markup=tag_user_markup(user)
-            )

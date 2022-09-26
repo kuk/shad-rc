@@ -4,7 +4,7 @@ from dataclasses import dataclass
 
 from aiogram import exceptions
 
-from neludim.log import (
+from rc.log import (
     log,
     json_msg
 )

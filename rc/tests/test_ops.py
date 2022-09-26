@@ -1,7 +1,7 @@
 
-from neludim.tests.fake import match_trace
+from rc.tests.fake import match_trace
 
-from neludim.const import (
+from rc.const import (
     CONFIRM_STATE,
     FAIL_STATE,
 
@@ -11,14 +11,14 @@ from neludim.const import (
     MAIN_ROUND,
     EXTRA_ROUND,
 )
-from neludim.obj import (
+from rc.obj import (
     User,
     Contact,
     Match,
 )
 from neludim.schedule import week_index_monday
     
-from neludim.ops import (
+from rc.ops import (
     ask_agree_participate,
     ask_edit_about,
     create_main_contacts,
@@ -28,7 +28,6 @@ from neludim.ops import (
     ask_confirm_contact,
     ask_contact_feedback,
     report_previous_week,
-    tag_users,
 )
 
 
@@ -159,18 +158,3 @@ async def test_ask_contact_feedback(context):
 
 async def test_report_previous_week(context):
     await report_previous_week(context)
-
-
-async def test_tag_users(context):
-    context.db.users = [
-        User(user_id=1),
-        User(
-            user_id=2, username='b',
-            updated_profile=context.schedule.now(),
-            about='about'
-        ),
-    ]
-    await tag_users(context)
-    assert match_trace(context.bot.trace, [
-        ['sendMessage', 'about'],
-    ])

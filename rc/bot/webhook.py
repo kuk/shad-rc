@@ -3,7 +3,7 @@ from functools import partial
 
 from aiogram import executor
 
-from neludim.const import PORT
+from rc.const import PORT
 
 
 async def on_startup(context, _):

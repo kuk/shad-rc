@@ -3,7 +3,7 @@ from aiogram.types import ChatType
 from aiogram.dispatcher.middlewares import BaseMiddleware
 from aiogram.dispatcher.handler import CancelHandler
 
-from neludim.log import (
+from rc.log import (
     log,
     json_msg
 )

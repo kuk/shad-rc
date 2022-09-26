@@ -7,9 +7,7 @@ from aiogram.types import (
     ReplyKeyboardRemove,
 )
 
-from neludim.const import (
-    ADMIN_USER_ID,
-
+from rc.const import (
     START_COMMAND,
     HELP_COMMAND,
     EDIT_PROFILE_COMMAND,
@@ -27,41 +25,26 @@ from neludim.const import (
     FAIL_CONTACT_COMMAND,
     CONTACT_FEEDBACK_COMMAND,
 
-    ADD_TAG_PREFIX,
-    RESET_TAGS_PREFIX,
-    CONFIRM_TAGS_PREFIX,
-
     EDIT_NAME_STATE,
     EDIT_CITY_STATE,
     EDIT_LINKS_STATE,
     EDIT_ABOUT_STATE,
     CONTACT_FEEDBACK_STATE,
+
     CONFIRM_STATE,
     FAIL_STATE,
 
     WEEK_PERIOD,
     MONTH_PERIOD,
 )
-from neludim.text import (
+from rc.text import (
     day_month,
     user_url,
     user_mention,
     intro_text,
     EMPTY_SYMBOL
 )
-from neludim.obj import User
-
-from .callback_data import (
-    AddTagCallbackData,
-    ResetTagsCallbackData,
-    ConfirmTagsCallbackData,
-
-    deserialize_callback_data,
-)
-from .tag_user import (
-    tag_user_text,
-    tag_user_markup
-)
+from rc.obj import User
 
 
 ######
@@ -572,73 +555,6 @@ async def handle_contact_feedback_state(context, message):
     )
 
 
-#####
-#  TAG
-#####
-
-
-async def update_tag_user_message(context, query, user):
-    await context.bot.edit_message_text(
-        text=tag_user_text(user),
-        chat_id=query.from_user.id,
-        message_id=query.message.message_id,
-        reply_markup=tag_user_markup(user)
-    )
-
-
-async def handle_add_tag(context, query):
-    callback_data = deserialize_callback_data(query.data, AddTagCallbackData)
-
-    user = await context.db.get_user(callback_data.user_id)
-
-    if callback_data.tag in user.tags:
-        # Make sure user is updated, otherwise "Message is not modified:
-        # specified new message content and reply markup are exactly
-        # the same as a current content"
-        return
-
-    user.tags.append(callback_data.tag)
-    user.confirmed_tags = context.schedule.now()
-
-    await context.db.put_user(user)
-    await update_tag_user_message(context, query, user)
-
-
-async def handle_reset_tags(context, query):
-    callback_data = deserialize_callback_data(query.data, ResetTagsCallbackData)
-
-    user = await context.db.get_user(callback_data.user_id)
-
-    if not user.tags:
-        return
-
-    user.tags = []
-    user.confirmed_tags = context.schedule.now()
-
-    await context.db.put_user(user)
-    await update_tag_user_message(context, query, user)
-
-
-async def handle_confirm_tags(context, query):
-    callback_data = deserialize_callback_data(query.data, ConfirmTagsCallbackData)
-
-    user = await context.db.get_user(callback_data.user_id)
-
-    if (
-            user.confirmed_tags
-            and (
-                not user.updated_profile
-                or user.confirmed_tags > user.updated_profile
-            )
-    ):
-        return
-
-    user.confirmed_tags = context.schedule.now()
-
-    await context.db.put_user(user)
-    await update_tag_user_message(context, query, user)
-
-
 ######
 #  HELP/OTHER
 ########
@@ -716,22 +632,6 @@ def setup_handlers(context):
     context.dispatcher.register_message_handler(
         partial(handle_help, context),
         commands=HELP_COMMAND,
-    )
-
-    context.dispatcher.register_callback_query_handler(
-        partial(handle_add_tag, context),
-        user_id=ADMIN_USER_ID,
-        text_startswith=ADD_TAG_PREFIX
-    )
-    context.dispatcher.register_callback_query_handler(
-        partial(handle_reset_tags, context),
-        user_id=ADMIN_USER_ID,
-        text_startswith=RESET_TAGS_PREFIX
-    )
-    context.dispatcher.register_callback_query_handler(
-        partial(handle_confirm_tags, context),
-        user_id=ADMIN_USER_ID,
-        text_startswith=CONFIRM_TAGS_PREFIX
     )
 
     # Every call to chat_states filter = db query. Place handlers

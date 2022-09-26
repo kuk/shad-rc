@@ -6,17 +6,17 @@ from json import (
 
 from aiogram.types import Update
 
-from neludim.bot.bot import (
+from rc.bot.bot import (
     Bot,
     Dispatcher,
     setup_bot,
 )
-from neludim.schedule import (
+from rc.schedule import (
     Schedule,
     START_DATE,
 )
-from neludim.db import DB
-from neludim.context import Context
+from rc.db import DB
+from rc.context import Context
 
 
 class FakeBot(Bot):

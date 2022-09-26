@@ -1,9 +1,9 @@
 
-from neludim.obj import (
+from rc.obj import (
     User,
     Match
 )
-from neludim.match import gen_matches
+from rc.match import gen_matches
 
 
 def test_even():

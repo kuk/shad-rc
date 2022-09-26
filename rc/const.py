@@ -77,19 +77,6 @@ S = 'S'
 M = 'M'
 SS = 'SS'
 
-######
-#  TAGS
-#######
-
-KRUTAN_TAG = 'krutan'
-RESEARCH_TAG = 'research'
-LEAD_TAG = 'lead'
-TAGS = [
-    KRUTAN_TAG,
-    RESEARCH_TAG,
-    LEAD_TAG,
-]
-
 #####
 #  ROUND
 ######
@@ -137,14 +124,6 @@ SHOW_CONTACT_COMMAND = 'show_contact'
 CONFIRM_CONTACT_COMMAND = 'confirm_contact'
 FAIL_CONTACT_COMMAND = 'fail_contact'
 CONTACT_FEEDBACK_COMMAND = 'contact_feedback'
-
-######
-#  CALLBACK DATA
-######
-
-ADD_TAG_PREFIX = 'add_tag'
-RESET_TAGS_PREFIX = 'reset_tags'
-CONFIRM_TAGS_PREFIX = 'confirm_tags'
 
 ######
 #  PORT

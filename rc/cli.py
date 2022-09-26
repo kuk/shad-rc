@@ -20,7 +20,7 @@ def trigger_webhook(context, args):
 
 
 def build_parser():
-    parser = argparse.ArgumentParser(prog='neludim')
+    parser = argparse.ArgumentParser(prog='rc')
     parser.set_defaults(function=None)
     subs = parser.add_subparsers()
 
