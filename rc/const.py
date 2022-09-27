@@ -116,6 +116,9 @@ EDIT_ABOUT_COMMAND = 'edit_about'
 CANCEL_COMMAND = 'cancel'
 EMPTY_COMMAND = 'empty'
 
+MATCH_CITY_COMMAND = 'match_city'
+MATCH_WORLD_COMMAND = 'match_world'
+
 PARTICIPATE_COMMAND = 'participate'
 PAUSE_WEEK_COMMAND = 'pause_week'
 PAUSE_MONTH_COMMAND = 'pause_month'
