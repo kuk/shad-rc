@@ -7,17 +7,14 @@ from .obj import (
 )
 from .const import (
     CHATS_TABLE,
-    CHATS_KEY,
-
     USERS_TABLE,
-    USERS_KEY,
-    USERS_CITY_KEY,
-
     CONTACTS_TABLE,
-    CONTACTS_KEY,
-
     MANUAL_MATCHES_TABLE,
-    MANUAL_MATCHES_KEY,
+
+    ID_KEY,
+    USER_ID_KEY,
+    CITY_KEY,
+    KEY_KEY,
 
     N, S,
 )
@@ -43,7 +40,7 @@ from .dynamo import (
 async def get_chat(db, id):
     item = await dynamo_get(
         db.client, CHATS_TABLE,
-        CHATS_KEY, N, id
+        ID_KEY, N, id
     )
     if item:
         return dynamo_deserialize_item(item, Chat)
@@ -73,7 +70,7 @@ async def set_chat_state(db, id, state):
 async def get_user(db, user_id):
     item = await dynamo_get(
         db.client, USERS_TABLE,
-        USERS_KEY, N, user_id
+        USER_ID_KEY, N, user_id
     )
     if item:
         return dynamo_deserialize_item(item, User)
@@ -85,7 +82,7 @@ async def read_users(db):
 
 
 async def read_user_cities(db):
-    items = await dynamo_scan(db.client, USERS_TABLE, key=USERS_CITY_KEY)
+    items = await dynamo_scan(db.client, USERS_TABLE, key=CITY_KEY)
     return [dynamo_deserialize_item(_, User).city for _ in items]
 
 
@@ -97,7 +94,7 @@ async def put_users(db, users):
 async def delete_users(db, user_ids):
     await dynamo_batch_delete(
         db.client, USERS_TABLE,
-        USERS_KEY, N, user_ids
+        USER_ID_KEY, N, user_ids
     )
 
 
@@ -117,7 +114,7 @@ async def delete_user(db, user_id):
 async def get_contact(db, key):
     item = await dynamo_get(
         db.client, CONTACTS_TABLE,
-        CONTACTS_KEY, S, dynamo_serialize_key(key)
+        KEY_KEY, S, dynamo_serialize_key(key)
     )
     if item:
         return dynamo_deserialize_item(item, Contact)
@@ -130,7 +127,7 @@ async def read_contacts(db):
 
 def serialize_contact(contact):
     item = dynamo_serialize_item(contact)
-    item[CONTACTS_KEY] = {S: dynamo_serialize_key(contact.key)}
+    item[KEY_KEY] = {S: dynamo_serialize_key(contact.key)}
     return item
 
 
@@ -143,7 +140,7 @@ async def delete_contacts(db, keys):
     keys = (dynamo_serialize_key(_) for _ in keys)
     await dynamo_batch_delete(
         db.client, CONTACTS_TABLE,
-        CONTACTS_KEY, S, keys
+        KEY_KEY, S, keys
     )
 
 
@@ -167,7 +164,7 @@ async def read_manual_matches(db):
 
 def serialize_manual_match(match):
     item = dynamo_serialize_item(match)
-    item[MANUAL_MATCHES_KEY] = {S: dynamo_serialize_key(match.key)}
+    item[KEY_KEY] = {S: dynamo_serialize_key(match.key)}
     return item
 
 
@@ -180,7 +177,7 @@ async def delete_manual_matches(db, keys):
     keys = (dynamo_serialize_key(_) for _ in keys)
     await dynamo_batch_delete(
         db.client, MANUAL_MATCHES_TABLE,
-        MANUAL_MATCHES_KEY, S, keys
+        KEY_KEY, S, keys
     )
 
 

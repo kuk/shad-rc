@@ -96,17 +96,14 @@ WORLDWIDE_MODE = 'worldwide_mode'
 #####
 
 CHATS_TABLE = 'chats'
-CHATS_KEY = 'id'
-
 USERS_TABLE = 'users'
-USERS_KEY = 'user_id'
-USERS_CITY_KEY = 'city'
-
 CONTACTS_TABLE = 'contacts'
-CONTACTS_KEY = 'key'
-
 MANUAL_MATCHES_TABLE = 'manual_matches'
-MANUAL_MATCHES_KEY = 'key'
+
+ID_KEY = 'id'
+USER_ID_KEY = 'user_id'
+CITY_KEY = 'city'
+KEY_KEY = 'key'
 
 #####
 #  COMMAND
