@@ -84,6 +84,13 @@ SS = 'SS'
 MAIN_ROUND = 'main'
 EXTRA_ROUND = 'extra'
 
+####
+#  MATCH MODE
+########
+
+CITY_MODE = 'city'
+WORLDWIDE_MODE = 'worldwide_mode'
+
 ######
 #  DB
 #####
@@ -93,6 +100,7 @@ CHATS_KEY = 'id'
 
 USERS_TABLE = 'users'
 USERS_KEY = 'user_id'
+USERS_CITY_KEY = 'city'
 
 CONTACTS_TABLE = 'contacts'
 CONTACTS_KEY = 'key'
@@ -117,7 +125,7 @@ CANCEL_COMMAND = 'cancel'
 EMPTY_COMMAND = 'empty'
 
 MATCH_CITY_COMMAND = 'match_city'
-MATCH_WORLD_COMMAND = 'match_world'
+MATCH_WORLDWIDE_COMMAND = 'match_worldwide'
 
 PARTICIPATE_COMMAND = 'participate'
 PAUSE_WEEK_COMMAND = 'pause_week'

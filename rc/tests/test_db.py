@@ -15,11 +15,13 @@ async def test_users(db):
     user = User(
         user_id=1,
         name='abc',
+        city='def'
     )
 
     await db.put_user(user)
     assert user == await db.get_user(user_id=user.user_id)
     assert user in await db.read_users()
+    assert 'def' in await db.read_user_cities()
 
     await db.delete_user(user_id=user.user_id)
     assert await db.get_user(user_id=user.user_id) is None

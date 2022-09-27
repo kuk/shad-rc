@@ -5,7 +5,10 @@ from dataclasses import (
     fields,
 )
 
-from .const import MAIN_ROUND
+from .const import (
+    MAIN_ROUND,
+    WORLDWIDE_MODE
+)
 
 
 def obj_annots(obj):
@@ -36,6 +39,8 @@ class User:
     links: str = None
     about: str = None
     updated_profile: Datetime = None
+
+    match_mode: str = WORLDWIDE_MODE
 
     partner_user_id: int = None
 

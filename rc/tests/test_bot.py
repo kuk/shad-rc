@@ -13,6 +13,9 @@ from rc.const import (
 
     CONFIRM_STATE,
     FAIL_STATE,
+
+    CITY_MODE,
+    WORLDWIDE_MODE,
 )
 
 from rc.tests.fake import (
@@ -110,6 +113,48 @@ async def test_cancel_edit(context):
     await process_update(context, START_JSON.replace('/start', '/cancel'))
 
     assert context.db.users == [User(user_id=113947584, name='A K', links='vk.com/alexkuk')]
+
+
+#######
+#  MATCH MODE
+######
+
+
+async def test_match_city_ask_edit(context):
+    context.db.users = [User(user_id=113947584)]
+    await process_update(context, START_JSON.replace('/start', '/match_city'))
+    assert match_trace(context.bot.trace, [
+        ['sendMessage', 'Заполни'],
+    ])
+    
+
+async def test_match_city_alone(context):
+    context.db.users = [User(user_id=113947584, city='Москва')]
+    await process_update(context, START_JSON.replace('/start', '/match_city'))
+    assert match_trace(context.bot.trace, [
+        ['sendMessage', 'Ты пока единственный'],
+    ])
+    assert context.db.users[0].match_mode == CITY_MODE
+
+
+async def test_match_city(context):
+    context.db.users = [
+        User(user_id=123, city='Москва'),
+        User(user_id=113947584, city='Москва'),
+    ]
+    await process_update(context, START_JSON.replace('/start', '/match_city'))
+    assert match_trace(context.bot.trace, [
+        ['sendMessage', 'Участников с таким городом в анкете - 2'],
+    ])
+
+
+async def test_match_worldwide(context):
+    context.db.users = [User(user_id=113947584)]
+    await process_update(context, START_JSON.replace('/start', '/match_worldwide'))
+    assert match_trace(context.bot.trace, [
+        ['sendMessage', 'Бот выберет случайного'],
+    ])
+    assert context.db.users[0].match_mode == WORLDWIDE_MODE
 
 
 #######

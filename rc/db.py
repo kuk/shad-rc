@@ -11,6 +11,7 @@ from .const import (
 
     USERS_TABLE,
     USERS_KEY,
+    USERS_CITY_KEY,
 
     CONTACTS_TABLE,
     CONTACTS_KEY,
@@ -81,6 +82,11 @@ async def get_user(db, user_id):
 async def read_users(db):
     items = await dynamo_scan(db.client, USERS_TABLE)
     return [dynamo_deserialize_item(_, User) for _ in items]
+
+
+async def read_user_cities(db):
+    items = await dynamo_scan(db.client, USERS_TABLE, key=USERS_CITY_KEY)
+    return [dynamo_deserialize_item(_, User).city for _ in items]
 
 
 async def put_users(db, users):
@@ -210,6 +216,7 @@ DB.get_chat_state = get_chat_state
 
 DB.get_user = get_user
 DB.read_users = read_users
+DB.read_user_cities = read_user_cities
 DB.put_user = put_user
 DB.delete_user = delete_user
 DB.put_users = put_users

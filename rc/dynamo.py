@@ -73,11 +73,16 @@ async def dynamo_delete(client, table, key_name, key_type, key_value):
     )
 
 
-async def dynamo_scan(client, table):
+async def dynamo_scan(client, table, key=None):
     pager = client.get_paginator('scan')
-    responses = pager.paginate(
-        TableName=table
-    )
+    if key:
+        # https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Expressions.ProjectionExpressions.html
+        responses = pager.paginate(
+            TableName=table,
+            ProjectionExpression=key
+        )
+    else:
+        responses = pager.paginate(TableName=table)
     items = []
     async for response in responses:
         items.extend(response['Items'])

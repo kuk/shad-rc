@@ -58,6 +58,9 @@ class FakeDB(DB):
     async def read_users(self):
         return self.users
 
+    async def read_user_cities(self):
+        return [_.city for _ in self.users]
+
     async def put_user(self, user):
         await self.delete_user(user.user_id)
         self.users.append(user)
