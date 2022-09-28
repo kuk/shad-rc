@@ -1,11 +1,9 @@
 
 import random
-from collections import (
-    defaultdict,
-    Counter
-)
+from collections import defaultdict
 
 from .obj import Match
+from .const import CITY_MODE
 
 
 def gen_matches(users, skip_matches=(), manual_matches=(), seed=0):
@@ -27,27 +25,13 @@ def gen_matches(users, skip_matches=(), manual_matches=(), seed=0):
             manual_matches_index[match.user_id].add(match.partner_user_id)
             manual_matches_index[match.partner_user_id].add(match.user_id)
 
-    city_weights = Counter(
-        _.city for _ in users
-        if _.city
-    )
-
     def key(user):
         has_manual_match = user.user_id in manual_matches_index
-
-        has_about = (
-            user.links is not None
-            or user.about is not None
-        )
-
-        city_weight = 0
-        if user.city:
-            city_weight = city_weights[user.city]
+        match_city = user.match_mode == CITY_MODE
 
         return (
             has_manual_match,
-            has_about,
-            city_weight,
+            match_city,
 
             # shuffle inside groups
             random.random()
@@ -74,16 +58,22 @@ def gen_matches(users, skip_matches=(), manual_matches=(), seed=0):
             def key(partner_user, user=user):
                 is_manual_match = partner_user.user_id in manual_matches_index[user.user_id]
 
-                same_city = False
-                if user.city and partner_user.city:
+                if user.match_mode == CITY_MODE:
                     same_city = user.city == partner_user.city
+                    both_match_city = partner_user.match_mode == CITY_MODE
 
-                return (
-                    is_manual_match,
-                    same_city
-                )
+                    return (
+                        is_manual_match,
+                        same_city,
+                        both_match_city
+                    )
 
-            # key is similarity, bigger better
+                else:
+                    return (
+                        is_manual_match,
+                        random.random()
+                    )
+
             partner_users = sorted(partner_users, key=key, reverse=True)
             partner_user_id = partner_users[0].user_id
 
