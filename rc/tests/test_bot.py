@@ -277,3 +277,15 @@ async def test_other(context):
     assert match_trace(context.bot.trace, [
         ['sendMessage', 'Как это']
     ])
+
+
+#####
+#  CHAT MEMBER
+######
+
+
+async def test_chat_member(context):
+    await process_update(context, START_JSON.replace('113947584', '123'))
+    assert match_trace(context.bot.trace, [
+        ['sendMessage', 'Не нашел тебя в чате']
+    ])
