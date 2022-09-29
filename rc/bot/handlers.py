@@ -157,7 +157,12 @@ HELP_TEXT = f'''Бот @shad_alumni_rc_bot организует random coffee д
 /{SHOW_CONTACT_COMMAND} - контакт, анкета собеседника
 /{CONFIRM_CONTACT_COMMAND} - договорились о встрече
 /{FAIL_CONTACT_COMMAND} - не договорились/не отвечает
-/{CONTACT_FEEDBACK_COMMAND} - как прошла встреча'''
+/{CONTACT_FEEDBACK_COMMAND} - как прошла встреча
+
+<b>Авторы</b>
+Код - @alexkuk
+Аватарка - https://instagram.com/loullllett
+Первая версия бота - @riazanovskiy'''
 
 
 ######
