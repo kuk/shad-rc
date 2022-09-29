@@ -101,9 +101,7 @@ def setup_middlewares(context):
     middlewares = [
         PrivateMiddleware(),
         LoggingMiddleware(),
-
-        # Disable to testing, bot is not prod chat member
-        # ChatMemberMiddleware(context),
+        ChatMemberMiddleware(context),
     ]
     for middleware in middlewares:
         context.dispatcher.middleware.setup(middleware)
